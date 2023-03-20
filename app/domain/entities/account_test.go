@@ -8,11 +8,14 @@ import (
 	"github.com/jonloureiro/tiny-bank/extensions/jwt"
 )
 
-var validCPF, _ = vo.NewCPF("69029890100")
-
 func TestNewAccount(t *testing.T) {
+	var (
+		validCPF, _   = vo.NewCPF("69029890100")
+		initialAmount = 100
+	)
+
 	t.Run("create account", func(t *testing.T) {
-		account, err := entities.NewAccount("Jon", validCPF, "123456")
+		account, err := entities.NewAccount("Jon", "123456", validCPF, initialAmount)
 		if err != nil {
 			t.Errorf("expected no error, got %v", err)
 		}
@@ -40,10 +43,16 @@ func TestNewAccount(t *testing.T) {
 				secret:      "",
 				expectedErr: entities.ErrEmptySecret,
 			},
+			"empty cpf": {
+				name:        "Jon",
+				cpf:         nil,
+				secret:      "123456",
+				expectedErr: entities.ErrEmptyCPF,
+			},
 		}
 		for desc, tC := range testCases {
 			t.Run(desc, func(t *testing.T) {
-				account, err := entities.NewAccount(tC.name, tC.cpf, tC.secret)
+				account, err := entities.NewAccount(tC.name, tC.secret, tC.cpf, initialAmount)
 				if err != tC.expectedErr {
 					t.Errorf("expected error %v, got %v", tC.expectedErr, err)
 				}
@@ -53,12 +62,18 @@ func TestNewAccount(t *testing.T) {
 			})
 		}
 	})
+
 }
 
 func TestAuthenticateAccount(t *testing.T) {
+	var (
+		validCPF, _   = vo.NewCPF("69029890100")
+		initialAmount = 100
+	)
+
 	privateKey := "s3cr3t"
 	secret := "123456"
-	account, err := entities.NewAccount("Jon", validCPF, secret)
+	account, err := entities.NewAccount("Jon", secret, validCPF, initialAmount)
 	if err != nil {
 		t.Errorf("expected no error, got %v", err)
 	}

@@ -13,6 +13,7 @@ const (
 	ValidCPF            = "69029890100"
 	CPFAlreadyExists    = "68347578133"
 	CPFWithUnknownError = "70530694190"
+	initialAmount       = 100
 )
 
 type AccountsRepositoryMock struct {
@@ -49,7 +50,7 @@ func (a *AccountsRepositoryMock) FindByID(id id.ID) (*entities.Account, error) {
 
 func (a *AccountsRepositoryMock) FindByCPF(cpf *vo.CPF) (*entities.Account, error) {
 	if cpf.Value() == CPFAlreadyExists {
-		account, _ := entities.NewAccount("Jon", cpf, "123456")
+		account, _ := entities.NewAccount("Jon", "123456", cpf, initialAmount)
 		return account, nil
 	}
 	account, ok := a.StorageByCPF[cpf.Value()]

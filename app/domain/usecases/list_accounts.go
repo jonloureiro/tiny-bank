@@ -2,17 +2,17 @@ package usecases
 
 import "github.com/jonloureiro/tiny-bank/app/domain/entities"
 
-type ListAccountInput struct {
+type ListAccountsInput struct {
 }
 
-type ListAccountOutput struct {
+type ListAccountsOutput struct {
 	Accounts []*entities.Account
 }
 
-func (uC *TinyBankUseCases) ListAccount(input ListAccountInput) (*ListAccountOutput, error) {
+func (uC *TinyBankUseCases) ListAccounts(input ListAccountsInput) (*ListAccountsOutput, error) {
 	accounts, err := uC.AccountsRepo.List()
 	if err != nil {
 		return nil, ErrDatabaseUnknownError
 	}
-	return &ListAccountOutput{Accounts: accounts}, nil
+	return &ListAccountsOutput{Accounts: accounts}, nil
 }

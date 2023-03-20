@@ -18,8 +18,7 @@ func TestCreateAccount(t *testing.T) {
 	)
 
 	t.Run("create account", func(t *testing.T) {
-		accountsRepo := mocks.NewAccountsRepositoryMock()
-		uC := usecases.TinyBankUseCases{AccountsRepo: accountsRepo}
+		uC := NewTinyBankUsecases()
 		input := usecases.CreateAccountInput{
 			Name:   validName,
 			CPF:    validCPF,
@@ -86,8 +85,7 @@ func TestCreateAccount(t *testing.T) {
 		}
 		for desc, tC := range testCases {
 			t.Run(desc, func(t *testing.T) {
-				accountsRepo := mocks.NewAccountsRepositoryMock()
-				uC := usecases.TinyBankUseCases{AccountsRepo: accountsRepo}
+				uC := NewTinyBankUsecases()
 				_, err := uC.CreateAccount(tC.input)
 				if err != tC.err {
 					t.Errorf("expected error %v, got %v", tC.err, err)

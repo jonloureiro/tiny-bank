@@ -8,8 +8,8 @@ import (
 
 type CreateAccountInput struct {
 	Name   string
-	CPF    string
 	Secret string
+	CPF    string
 }
 
 type CreateAccountOutput struct {
@@ -25,7 +25,7 @@ func (uC *TinyBankUseCases) CreateAccount(input CreateAccountInput) (*CreateAcco
 	if err == nil {
 		return nil, ErrAccountAlreadyExists
 	}
-	account, err := entities.NewAccount(input.Name, cpf, input.Secret)
+	account, err := entities.NewAccount(input.Name, input.Secret, cpf, uC.InitialAmount)
 	if err != nil {
 		return nil, err
 	}

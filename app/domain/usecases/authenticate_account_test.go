@@ -12,17 +12,17 @@ import (
 
 func TestAuthenticate(t *testing.T) {
 	const (
-		validName   = "Test"
-		validSecret = "123456"
-		privateKey  = "s3cr3t"
+		validName     = "Test"
+		validSecret   = "123456"
+		privateKey    = "s3cr3t"
+		initialAmount = 100
 	)
 
 	t.Run("", func(t *testing.T) {
-		accountsRepo := mocks.NewAccountsRepositoryMock()
 		cpf, _ := vo.NewCPF(mocks.ValidCPF)
-		account, _ := entities.NewAccount(validName, cpf, validSecret)
-		accountsRepo.Create(account)
-		uC := usecases.TinyBankUseCases{privateKey, accountsRepo}
+		account, _ := entities.NewAccount(validName, validSecret, cpf, initialAmount)
+		uC := NewTinyBankUsecases()
+		uC.AccountsRepo.Create(account)
 		input := usecases.AuthenticateAccountInput{
 			CPF:    account.CPF.Value(),
 			Secret: account.Secret,

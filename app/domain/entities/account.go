@@ -12,24 +12,30 @@ import (
 var (
 	ErrEmptyName          = errors.New("empty name")
 	ErrEmptySecret        = errors.New("empty secret")
+	ErrEmptyCPF           = errors.New("empty cpf")
 	ErrInvalidCredentials = errors.New("invalid credentials")
 )
 
 type Account struct {
-	ID        id.ID
-	Name      string
-	CPF       *vo.CPF
-	Secret    string
-	CreatedAt time.Time
+	ID            id.ID
+	Name          string
+	CPF           *vo.CPF
+	Secret        string
+	initialAmount int
+	CreatedAt     time.Time
 }
 
-func NewAccount(name string, cpf *vo.CPF, secret string) (*Account, error) {
+func NewAccount(name, secret string, cpf *vo.CPF, initialAmount int) (*Account, error) {
+	if cpf == nil {
+		return nil, ErrEmptyCPF
+	}
 	account := Account{
-		ID:        id.New(),
-		Name:      name,
-		CPF:       cpf,
-		Secret:    secret,
-		CreatedAt: time.Now(),
+		ID:            id.New(),
+		Name:          name,
+		CPF:           cpf,
+		Secret:        secret,
+		initialAmount: initialAmount,
+		CreatedAt:     time.Now(),
 	}
 	err := account.validate()
 	if err != nil {
