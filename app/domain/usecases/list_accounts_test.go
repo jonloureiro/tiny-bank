@@ -11,14 +11,13 @@ import (
 
 func TestListAccounts(t *testing.T) {
 	var (
-		validName     = "Test"
-		validSecret   = "123456"
-		validCPF, _   = vo.NewCPF("69029890100")
-		initialAmount = 100
+		validName   = "Test"
+		validSecret = "123456"
+		validCPF, _ = vo.NewCPF("69029890100")
 	)
 	t.Run("list accounts", func(t *testing.T) {
 		uC := NewTinyBankUsecases()
-		account, _ := entities.NewAccount(validName, validSecret, validCPF, initialAmount)
+		account, _ := entities.NewAccount(validName, validSecret, validCPF, uC.InitialAmount)
 		_ = uC.AccountsRepo.Create(account)
 		output, err := uC.ListAccounts(usecases.ListAccountsInput{})
 		if err != nil {

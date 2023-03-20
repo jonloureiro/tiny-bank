@@ -9,11 +9,10 @@ import (
 
 func TestTransferBetweenAccounts(t *testing.T) {
 	const (
-		privateKey    = "s3cr3t"
-		validSecret   = "123456"
-		validCPF1     = "02561075133"
-		validCPF2     = "61003251102"
-		initialAmount = 100
+		privateKey  = "s3cr3t"
+		validSecret = "123456"
+		validCPF1   = "02561075133"
+		validCPF2   = "61003251102"
 	)
 
 	t.Run("create transfer", func(t *testing.T) {
@@ -33,6 +32,5 @@ func TestTransferBetweenAccounts(t *testing.T) {
 		if output.TransferID == "" {
 			t.Errorf("expected transfer id, got empty string")
 		}
-
 	})
 }
